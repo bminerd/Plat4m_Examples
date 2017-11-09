@@ -1,0 +1,6 @@
+[submodule "Plat4m_Core"]
+	path = Plat4m_Core
+	url = https://github.com/bminerd/Plat4m_Core.git
+[submodule "Plat4m_Math"]
+	path = Plat4m_Math
+	url = https://github.com/bminerd/Plat4m_Math.git
