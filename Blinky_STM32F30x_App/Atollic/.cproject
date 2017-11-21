@@ -30,7 +30,7 @@
 								<option id="com.atollic.truestudio.as.general.incpath.2046604113" name="Include path" superClass="com.atollic.truestudio.as.general.incpath" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:\Projects\Plat4m_Examples\Blinky_STM32F30x_App\Atollic&quot;"/>
 								</option>
-								<option id="com.atollic.truestudio.as.symbols.defined.783804756" superClass="com.atollic.truestudio.as.symbols.defined" useByScannerDiscovery="false" valueType="definedSymbols">
+								<option id="com.atollic.truestudio.as.symbols.defined.783804756" name="Defined symbols" superClass="com.atollic.truestudio.as.symbols.defined" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="STM32F303xE"/>
 									<listOptionValue builtIn="false" value="HSE_VALUE=8000000"/>
 									<listOptionValue builtIn="false" value="USE_STDPERIPH_DRIVER"/>
@@ -100,7 +100,8 @@
 								<option id="com.atollic.truestudio.common_options.target.fpucore.2045141559" name="FPU" superClass="com.atollic.truestudio.common_options.target.fpucore" useByScannerDiscovery="false" value="com.atollic.truestudio.common_options.target.fpucore.fpv4-sp-d16" valueType="enumerated"/>
 								<option id="com.atollic.truestudio.common_options.target.fpu.244797178" name="Floating point" superClass="com.atollic.truestudio.common_options.target.fpu" useByScannerDiscovery="false" value="com.atollic.truestudio.common_options.target.fpu.hard" valueType="enumerated"/>
 								<option id="com.atollic.truestudio.common_options.target.interwork.1202151148" name="Mix ARM/Thumb" superClass="com.atollic.truestudio.common_options.target.interwork" useByScannerDiscovery="false"/>
-								<option id="com.atollic.truestudio.ldcc.general.scriptfile.544107234" name="Linker script" superClass="com.atollic.truestudio.ldcc.general.scriptfile"/>
+								<option id="com.atollic.truestudio.ldcc.general.scriptfile.544107234" name="Linker script" superClass="com.atollic.truestudio.ldcc.general.scriptfile" useByScannerDiscovery="false" value="C:\Projects\Plat4m_Examples\Blinky_STM32F30x_App\Atollic\STM32F303RE_FLASH.ld" valueType="string"/>
+								<option id="com.atollic.truestudio.ldcc.optimization.do_garbage.577762853" name="Dead code removal" superClass="com.atollic.truestudio.ldcc.optimization.do_garbage" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 								<inputType id="com.atollic.truestudio.ldcc.input.1779220272" name="Input" superClass="com.atollic.truestudio.ldcc.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
