@@ -11,7 +11,7 @@
 //
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Benjamin Minerd
+// Copyright (c) 2016 Benjamin Minerd
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -35,22 +35,22 @@
 ///
 /// @file main.cpp
 /// @author Ben Minerd
-/// @date 1/17/2016
-/// @brief Main source file for Blinky_STM32F30x.
+/// @date 11/13/2017
+/// @brief Main source file for Blinky_STM32F4xx_App.
 ///
 
 #include <Plat4m.h>
-#include <ProcessorSTM32F30x.h>
-#include <GpioPortSTM32F30x.h>
-#include <GpioPinSTM32F30x.h>
+#include <ProcessorSTM32F4xx.h>
+#include <GpioPortSTM32F4xx.h>
+#include <GpioPinSTM32F4xx.h>
 
 using namespace Plat4m;
 
-static ProcessorSTM32F30x processor(3.3, 8000000);
+static ProcessorSTM32F4xx processor(3.3, 8000000);
 
-static const ProcessorSTM32F30x::Config processorConfig =
+static const ProcessorSTM32F4xx::Config processorConfig =
 {
-	ProcessorSTM32F30x::CLOCK_SOURCE_EXTERNAL, // .clockSource
+	ProcessorSTM32F4xx::CLOCK_SOURCE_EXTERNAL, // .clockSource
 	72000000, 								   // .coreClockFrequencyHz, 72 MHz
 	72000000, 								   // .ahbClockFrequencyHz,  72 MHz
 	36000000, 								   // .apb1ClockFrequencyHz, 36 MHz
@@ -62,9 +62,9 @@ static const ProcessorSTM32F30x::Config processorConfig =
 	FLASH_BASE								   // .vectorTableAddress
 };
 
-static GpioPortSTM32F30x ledGpioPort(GpioPortSTM32F30x::ID_A);
+static GpioPortSTM32F4xx ledGpioPort(GpioPortSTM32F4xx::ID_A);
 
-static GpioPinSTM32F30x ledGpioPin(ledGpioPort, GpioPinSTM32F30x::ID_5);
+static GpioPinSTM32F4xx ledGpioPin(ledGpioPort, GpioPinSTM32F4xx::ID_5);
 
 //------------------------------------------------------------------------------
 int main()
