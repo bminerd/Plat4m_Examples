@@ -46,7 +46,7 @@ static Plat4m::ApplicationInsServerApp applicationInsServerApp;
 //------------------------------------------------------------------------------
 int main()
 {
-	applicationInsServerApp.run();
+    applicationInsServerApp.run();
 
     return 0;
 }

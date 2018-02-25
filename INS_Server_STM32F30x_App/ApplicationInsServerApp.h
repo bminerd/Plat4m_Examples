@@ -85,9 +85,9 @@ public:
     //--------------------------------------------------------------------------
     // Public constructors
     //--------------------------------------------------------------------------
-    
+
     ApplicationInsServerApp();
-    
+
     //--------------------------------------------------------------------------
     // Public virtual destructors
     //--------------------------------------------------------------------------
@@ -95,7 +95,7 @@ public:
     virtual ~ApplicationInsServerApp();
 
 private:
-    
+
     //--------------------------------------------------------------------------
     // Private static data members
     //--------------------------------------------------------------------------
@@ -103,7 +103,7 @@ private:
     // Constants
 
     static const ProcessorSTM32F30x::Config myProcessorConfig;
-    
+
     static const GpioPin::Config myLedGpioPinConfig;
 
     static const Uart::Config myUartConfig;
@@ -125,7 +125,7 @@ private:
     AllocationMemoryLite<12288> myAllocationMemory;
 
     SystemFreeRtosCortexM mySystem;
-    
+
     BoardNucleoF303RE myNucleoBoard;
 
     BoardStevalMKI160V1 myStImuEvalBoard;
@@ -163,7 +163,7 @@ private:
     InsServer myInsServer;
 
     Thread& myLedThread;
-    
+
     //--------------------------------------------------------------------------
     // Private methods implemented from Application
     //--------------------------------------------------------------------------
