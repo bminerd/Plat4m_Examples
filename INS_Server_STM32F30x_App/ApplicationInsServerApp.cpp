@@ -57,29 +57,29 @@ using namespace Plat4m;
 const ProcessorSTM32F30x::Config ApplicationInsServerApp::myProcessorConfig =
 {
     ProcessorSTM32F30x::CLOCK_SOURCE_EXTERNAL, // .clockSource
-    72000000, 								   // .coreClockFrequencyHz, 72 MHz
-    72000000, 								   // .ahbClockFrequencyHz,  72 MHz
-    36000000, 								   // .apb1ClockFrequencyHz, 36 MHz
-    72000000, 								   // .apb2ClockFrequencyHz, 72 MHz
-    false,									   // .isUsbOtgFs
-    false,									   // .isSdio
-    false,									   // .isRng
-    false,									   // .isEthernet
-    FLASH_BASE								   // .vectorTableAddress
+    72000000,                                  // .coreClockFrequencyHz, 72 MHz
+    72000000,                                  // .ahbClockFrequencyHz,  72 MHz
+    36000000,                                  // .apb1ClockFrequencyHz, 36 MHz
+    72000000,                                  // .apb2ClockFrequencyHz, 72 MHz
+    false,                                     // .isUsbOtgFs
+    false,                                     // .isSdio
+    false,                                     // .isRng
+    false,                                     // .isEthernet
+    FLASH_BASE                                 // .vectorTableAddress
 };
 
 const GpioPin::Config ApplicationInsServerApp::myLedGpioPinConfig =
 {
     GpioPin::MODE_DIGITAL_OUTPUT_PUSH_PULL, // .mode
-    GpioPin::RESISTOR_NONE					// .resistor
+    GpioPin::RESISTOR_NONE                  // .resistor
 };
 
 const Uart::Config ApplicationInsServerApp::myUartConfig =
 {
     115200,                          // .baudRate, 115.2 kb/s
-    Uart::WORD_BITS_8, 				 // .wordBits
-    Uart::STOP_BITS_1, 				 // .stopBits
-    Uart::PARITY_NONE, 				 // .parity
+    Uart::WORD_BITS_8,               // .wordBits
+    Uart::STOP_BITS_1,               // .stopBits
+    Uart::PARITY_NONE,               // .parity
     Uart::HARDWARE_FLOW_CONTROL_NONE // .hardwareFlowControl
 };
 
@@ -92,12 +92,12 @@ const I2c::Config ApplicationInsServerApp::myImuI2cConfig =
 const Imu::Config ApplicationInsServerApp::myImuConfig =
 {
     Imu::MEASUREMENT_MODE_CONTINUOUS, // .measurementMode
-    2.0, 							  // .accelMeasurementRangeAccelerationG
-    104,							  // .accelMeasurementRateHz
-    1000.0,						      // .gyroMeasurementRangeAngularVelocityDps
-    104,							  // .gyroMeasurementRateHz
-    0.0,							  // .magMeasurementRange
-    0							      // .magMeasurementRateHz
+    2.0,                              // .accelMeasurementRangeAccelerationG
+    104,                              // .accelMeasurementRateHz
+    1000.0,                           // .gyroMeasurementRangeAngularVelocityDps
+    104,                              // .gyroMeasurementRateHz
+    0.0,                              // .magMeasurementRange
+    0                                 // .magMeasurementRateHz
 };
 
 const ImuLSM6DS3::Config ApplicationInsServerApp::myImuLSM6DS3Config =
