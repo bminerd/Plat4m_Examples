@@ -4,3 +4,9 @@
 [submodule "Plat4m_Math"]
 	path = Plat4m_Math
 	url = https://github.com/bminerd/Plat4m_Math.git
+[submodule "Plat4m_Controls"]
+	path = Plat4m_Controls
+	url = https://github.com/bminerd/Plat4m_Controls.git
+[submodule "Eigen"]
+	path = Eigen
+	url = https://github.com/eigenteam/eigen-git-mirror.git
