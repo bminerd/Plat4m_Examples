@@ -66,6 +66,7 @@
 #include <Plat4m_Core/ComLinkTemplate.h>
 #include <Plat4m_Core/ComProtocolPlat4m/ComProtocolPlat4mBinary.h>
 #include <Plat4m_Core/ComProtocolPlat4m/BinaryMessageFrameHandler.h>
+#include <Plat4m_Core/WaitCondition.h>
 
 //------------------------------------------------------------------------------
 // Namespaces
@@ -164,6 +165,14 @@ private:
 
     Thread& myLedThread;
 
+    Thread& myImuThread;
+
+    WaitCondition& myImuWaitCondition;
+
+    bool myIsImuAccelDataReady;
+
+    bool myIsImuGyroDataReady;
+
     //--------------------------------------------------------------------------
     // Private methods implemented from Application
     //--------------------------------------------------------------------------
@@ -186,9 +195,16 @@ private:
 
     void ledThreadCallback();
 
+    void imuAccelMeasurementReadyCallback();
+
+    void imuGyroMeasurementReadyCallback();
+
+    void imuThreadCallback();
+
     void imuAndInsMeasurementCallback();
 };
 
 }; // namespace Plat4m
 
 #endif // PLAT4M_APPLICATION_INS_SERVER_APP_H
+

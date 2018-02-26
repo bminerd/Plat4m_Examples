@@ -152,9 +152,13 @@ ApplicationInsServerApp::ApplicationInsServerApp() :
     myInsServer(myComProtocolPlat4m,
                 myBinaryMessageFrameHandler),
     myLedThread(System::createThread(
-                    createCallback(this,
-                                   &ApplicationInsServerApp::ledThreadCallback),
-                    500))
+                   createCallback(this, &ApplicationInsServerApp::ledThreadCallback),
+                   500)),
+    myImuThread(System::createThread(
+                 createCallback(this, &ApplicationInsServerApp::imuThreadCallback))),
+    myImuWaitCondition(System::createWaitCondition(myImuThread)),
+    myIsImuAccelDataReady(false),
+    myIsImuGyroDataReady(false)
 {
 }
 
@@ -269,15 +273,57 @@ void ApplicationInsServerApp::initializeSystem()
         createCallback(this,
                        &ApplicationInsServerApp::imuAndInsMeasurementCallback));
 
+    myImu.setAccelMeasurementReadyCallback(
+          createCallback(this,
+                   &ApplicationInsServerApp::imuAccelMeasurementReadyCallback));
+    myImu.setGyroMeasurementReadyCallback(
+          createCallback(this,
+                    &ApplicationInsServerApp::imuGyroMeasurementReadyCallback));
+
     InsServer::Config insServerConfig;
     insServerConfig.outputRateDivisionFactor = 1;
     myInsServer.setConfig(insServerConfig);
+
+    myImuThread.setPriority(3);
+    myImuThread.setEnabled(true);
 }
 
 //------------------------------------------------------------------------------
 void ApplicationInsServerApp::ledThreadCallback()
 {
     myLedGpioPin.toggleLevel();
+}
+
+//------------------------------------------------------------------------------
+void ApplicationInsServerApp::imuAccelMeasurementReadyCallback()
+{
+    myIsImuAccelDataReady = true;
+    myImuWaitCondition.notifyFast();
+}
+
+//------------------------------------------------------------------------------
+void ApplicationInsServerApp::imuGyroMeasurementReadyCallback()
+{
+    myIsImuGyroDataReady = true;
+    myImuWaitCondition.notifyFast();
+}
+
+//------------------------------------------------------------------------------
+void ApplicationInsServerApp::imuThreadCallback()
+{
+    myImuWaitCondition.wait();
+
+    if (myIsImuAccelDataReady)
+    {
+        myIns.accelMeasurementReadyCallback();
+        myIsImuAccelDataReady = false;
+    }
+
+    if (myIsImuGyroDataReady)
+    {
+        myIns.gyroMeasurementReadyCallback();
+        myIsImuGyroDataReady = false;
+    }
 }
 
 //------------------------------------------------------------------------------
