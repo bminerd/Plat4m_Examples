@@ -96,6 +96,7 @@
 									<listOptionValue builtIn="false" value="&quot;C:\Projects\Plat4m_Examples\Plat4m_Core\STM32F30x\STM32F30x_DSP_StdPeriph_Lib_V1.2.3\Libraries\CMSIS\Device\ST\STM32F30x\Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Projects\Plat4m_Examples\Plat4m_Core\STM32F30x\STM32F30x_DSP_StdPeriph_Lib_V1.2.3\Libraries\CMSIS\Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Projects\Plat4m_Examples\Plat4m_Core\STM32F30x\STM32F30x_DSP_StdPeriph_Lib_V1.2.3\Libraries\STM32F30x_StdPeriph_Driver\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Projects\Plat4m_Examples\Eigen&quot;"/>
 								</option>
 								<inputType id="com.atollic.truestudio.gpp.input.482460449" superClass="com.atollic.truestudio.gpp.input"/>
 							</tool>
