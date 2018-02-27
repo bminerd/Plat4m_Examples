@@ -48,27 +48,31 @@
 **
 ****************************************************************************/
 
-#include "mainwidget.h"
+#include "MainWidgetKalman.h"
 
 #include <QMouseEvent>
 
 #include <math.h>
 
+#include <Plat4m_Core/Imu.h>
 #include <Plat4m_Core/Ins.h>
 #include <Plat4m_Core/CallbackMethod.h>
 
-MainWidget::MainWidget(Plat4m::InsClient& insClient, QWidget *parent) :
+MainWidgetKalman::MainWidgetKalman(Plat4m::ImuClient& imuClient,
+                                               QWidget *parent) :
     QOpenGLWidget(parent),
-    myInsClient(insClient),
+    myImuClient(imuClient),
+    myIns(myImuClient),
+    mySensors(SENSORS_ACCEL),
     geometries(0),
     texture(0),
     angularSpeed(0)
 {
-    insClient.setMeasurementReadyCallback(
-                createCallback(this, &MainWidget::insMeasurementReadyCallback));
+    myIns.setMeasurementReadyCallback(
+          createCallback(this, &MainWidgetKalman::insMeasurementReadyCallback));
 }
 
-MainWidget::~MainWidget()
+MainWidgetKalman::~MainWidgetKalman()
 {
     // Make sure the context is current when deleting the texture
     // and the buffers.
@@ -78,14 +82,25 @@ MainWidget::~MainWidget()
     doneCurrent();
 }
 
-void MainWidget::insMeasurementReadyCallback()
+void MainWidgetKalman::imuMeasurementReadyCallback()
 {
-    Plat4m::Ins::Measurement insMeasurement;
-    myInsClient.getMeasurement(insMeasurement);
-
-    float pitch = insMeasurement.rotationYAngleDegrees;
-    float yaw   = insMeasurement.rotationZAngleDegrees;
-    float roll  = insMeasurement.rotationXAngleDegrees;
+    switch (mySensors)
+    {
+        case SENSORS_ACCEL:
+        {
+            break;
+        }
+        case SENSORS_GYRO:
+        {
+            break;
+        }
+        case SENSORS_IMU: // Fall through
+        default:
+        {
+            myIns.gyroMeasurementReadyCallback();
+            myIns.accelMeasurementReadyCallback();
+        }
+    }
 
     // Update rotation
     rotation = QQuaternion::fromEulerAngles(pitch, yaw, roll);
@@ -94,14 +109,27 @@ void MainWidget::insMeasurementReadyCallback()
     update();
 }
 
+void MainWidgetKalman::imuMeasurementReadyCallback()
+{
+    myIns.accelMeasurementReadyCallback();
+    myIns.gyroMeasurementReadyCallback();
+
+    // Update rotation
+    rotation = QQuaternion::fromEulerAngles(pitch, yaw, roll);
+
+    // Request an update
+    update();
+}
+
+
 //! [0]
-void MainWidget::mousePressEvent(QMouseEvent *e)
+void MainWidgetKalman::mousePressEvent(QMouseEvent *e)
 {
     // Save mouse press position
     mousePressPosition = QVector2D(e->localPos());
 }
 
-void MainWidget::mouseReleaseEvent(QMouseEvent *e)
+void MainWidgetKalman::mouseReleaseEvent(QMouseEvent *e)
 {
     // Mouse release position - mouse press position
     QVector2D diff = QVector2D(e->localPos()) - mousePressPosition;
@@ -122,7 +150,7 @@ void MainWidget::mouseReleaseEvent(QMouseEvent *e)
 //! [0]
 
 //! [1]
-void MainWidget::timerEvent(QTimerEvent *)
+void MainWidgetKalman::timerEvent(QTimerEvent *)
 {
     // Decrease angular speed (friction)
     angularSpeed *= 0.99;
@@ -140,7 +168,7 @@ void MainWidget::timerEvent(QTimerEvent *)
 }
 //! [1]
 
-void MainWidget::initializeGL()
+void MainWidgetKalman::initializeGL()
 {
     initializeOpenGLFunctions();
 
@@ -164,7 +192,7 @@ void MainWidget::initializeGL()
 }
 
 //! [3]
-void MainWidget::initShaders()
+void MainWidgetKalman::initShaders()
 {
     // Compile vertex shader
     if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vshader.glsl"))
@@ -185,7 +213,7 @@ void MainWidget::initShaders()
 //! [3]
 
 //! [4]
-void MainWidget::initTextures()
+void MainWidgetKalman::initTextures()
 {
     // Load cube.png image
     texture = new QOpenGLTexture(QImage(":/cube.png").mirrored());
@@ -203,7 +231,7 @@ void MainWidget::initTextures()
 //! [4]
 
 //! [5]
-void MainWidget::resizeGL(int w, int h)
+void MainWidgetKalman::resizeGL(int w, int h)
 {
     // Calculate aspect ratio
     qreal aspect = qreal(w) / qreal(h ? h : 1);
@@ -219,7 +247,7 @@ void MainWidget::resizeGL(int w, int h)
 }
 //! [5]
 
-void MainWidget::paintGL()
+void MainWidgetKalman::paintGL()
 {
     // Clear color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

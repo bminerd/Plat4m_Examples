@@ -54,8 +54,66 @@
 
 #ifndef QT_NO_OPENGL
 #include "mainwidget.h"
+#include "mainwidgetkalman.h"
 #endif
 
+#include <iostream>
+#include <fstream>
+#include <conio.h>
+
+#include <Plat4m_Core/Plat4m.h>
+#include <Plat4m_Core/AllocationMemoryLite/AllocationMemoryLite.h>
+#include <Plat4m_Core/SystemWindows/SystemWindows.h>
+#include <Plat4m_Core/SystemWindows/ProcessorWindows.h>
+#include <Plat4m_Core/SystemWindows/SerialPortWindows.h>
+#include <Plat4m_Core/Thread.h>
+#include <Plat4m_Core/CallbackFunction.h>
+#include <Plat4m_Core/CallbackFunctionParameter.h>
+#include <Plat4m_Core/ComLinkTemplate.h>
+#include <Plat4m_Core/ComProtocolPlat4m/ComProtocolPlat4mBinary.h>
+#include <Plat4m_Core/ImuServer/ImuClient.h>
+#include <Plat4m_Core/InsServer/InsClient.h>
+
+using namespace Plat4m;
+
+static AllocationMemoryLite<4096000> allocationMemory;
+
+static SystemWindows systemWindows;
+
+static ProcessorWindows processorWindows;
+
+static SerialPortWindows serialPort("COM3");
+
+static const SerialPort::Config serialPortConfig =
+{
+    115200,                                // .baudRate, 115.2 kb/s
+    SerialPort::WORD_BITS_8,               // .wordBits
+    SerialPort::STOP_BITS_1,               // .stopBits
+    SerialPort::PARITY_BIT_NONE,           // .parityBit
+    SerialPort::HARDWARE_FLOW_CONTROL_NONE // .hardwareFlowControl
+};
+
+static ComLinkTemplate<128, 128> comLink(serialPort);
+
+static ComProtocolPlat4mBinary comProtocolPlat4mBinary(comLink);
+
+static BinaryMessageFrameHandler binaryMessageFrameHandler(
+                                                       comProtocolPlat4mBinary);
+
+static ImuClient imuClient(comProtocolPlat4mBinary, binaryMessageFrameHandler);
+
+static InsClient insClient(comProtocolPlat4mBinary, binaryMessageFrameHandler);
+
+static MainWidget* widget = 0;
+static MainWidgetKalman* widgetKalman = 0;
+
+//------------------------------------------------------------------------------
+void threadCallback()
+{
+    printf("\nThread called!\n");
+}
+
+//------------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
@@ -66,12 +124,30 @@ int main(int argc, char *argv[])
 
     app.setApplicationName("cube");
     app.setApplicationVersion("0.1");
+
 #ifndef QT_NO_OPENGL
-    MainWidget widget;
-    widget.show();
+    widget = new MainWidget(insClient);
+    widget->show();
+
+    widgetKalman = new MainWidgetKalman(imuClient);
+    widgetKalman->show();
 #else
     QLabel note("OpenGL Support required");
     note.show();
 #endif
+
+    // Plat4m initialization
+
+    Thread& thread = System::createThread(createCallback(&threadCallback),
+                                          1000);
+    thread.setEnabled(true);
+
+    serialPort.setEnabled(true);
+    serialPort.setConfig(serialPortConfig);
+
+    insClient.setEnabled(true);
+
+    comLink.setEnabled(true);
+
     return app.exec();
 }

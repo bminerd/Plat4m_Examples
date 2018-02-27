@@ -48,8 +48,8 @@
 **
 ****************************************************************************/
 
-#ifndef MAINWIDGET_H
-#define MAINWIDGET_H
+#ifndef MAINWIDGET_KALMAN_H
+#define MAINWIDGET_KALMAN_H
 
 #include "geometryengine.h"
 
@@ -62,18 +62,30 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
 
-#include <Plat4m_Core/InsServer/InsClient.h>
+#include <Plat4m_Core/ImuServer/ImuClient.h>
+#include <Plat4m_Core/InsImu/InsImu.h>
 
 class GeometryEngine;
 
-class MainWidget : public QOpenGLWidget, protected QOpenGLFunctions
+class MainWidgetKalman : public QOpenGLWidget, protected QOpenGLFunctions
 {
     Q_OBJECT
 
 public:
-    explicit MainWidget(Plat4m::InsClient& insClient, QWidget *parent = 0);
-    ~MainWidget();
+
+    enum Sensors
+    {
+        SENSORS_ACCEL,
+        SENSORS_GYRO,
+        SENSORS_IMU
+    };
+
+    explicit MainWidgetKalman(Plat4m::ImuClient& imuClient,
+                              QWidget *parent = 0);
+    ~MainWidgetKalman();
     
+    void imuMeasurementReadyCallback();
+
     void insMeasurementReadyCallback();
 
 protected:
@@ -90,7 +102,11 @@ protected:
 
 private:
 
-    Plat4m::InsClient& myInsClient;
+    Plat4m::ImuClient& myImuClient;
+
+    Plat4m::InsImu myIns;
+
+    Sensors mySensors;
 
     QBasicTimer timer;
     QOpenGLShaderProgram program;
@@ -106,4 +122,4 @@ private:
     QQuaternion rotation;
 };
 
-#endif // MAINWIDGET_H
+#endif // MAINWIDGET_KALMAN_H

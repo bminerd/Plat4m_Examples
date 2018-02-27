@@ -63,6 +63,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\..\..\Plat4m_Core\STM32F30x\STM32F30x_DSP_StdPeriph_Lib_V1.2.3\Libraries\STM32F30x_StdPeriph_Driver\inc&quot;"/>
 								</option>
 								<option id="com.atollic.truestudio.gcc.optimization.prep_garbage.1156786587" name="Prepare dead code removal " superClass="com.atollic.truestudio.gcc.optimization.prep_garbage" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option id="com.atollic.truestudio.exe.debug.toolchain.gcc.optimization.level.1818855380" name="Optimization Level" superClass="com.atollic.truestudio.exe.debug.toolchain.gcc.optimization.level" useByScannerDiscovery="false" value="com.atollic.truestudio.gcc.optimization.level.00" valueType="enumerated"/>
 								<inputType id="com.atollic.truestudio.gcc.input.1157250165" superClass="com.atollic.truestudio.gcc.input"/>
 							</tool>
 							<tool id="com.atollic.truestudio.exe.debug.toolchain.ld.1793283548" name="C Linker" superClass="com.atollic.truestudio.exe.debug.toolchain.ld">
@@ -85,6 +86,10 @@
 									<listOptionValue builtIn="false" value="STM32F303xE"/>
 									<listOptionValue builtIn="false" value="HSE_VALUE=8000000"/>
 									<listOptionValue builtIn="false" value="USE_STDPERIPH_DRIVER"/>
+									<listOptionValue builtIn="false" value="EIGEN_NO_DEBUG"/>
+									<listOptionValue builtIn="false" value="EIGEN_DONT_ALIGN"/>
+									<listOptionValue builtIn="false" value="EIGEN_MALLOC_ALREADY_ALIGNED"/>
+									<listOptionValue builtIn="false" value="EIGEN_NO_MALLOC"/>
 								</option>
 								<option id="com.atollic.truestudio.gpp.directories.select.225415859" name="Include path" superClass="com.atollic.truestudio.gpp.directories.select" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\..\&quot;"/>
@@ -100,6 +105,9 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\..\..\Eigen&quot;"/>
 								</option>
 								<option id="com.atollic.truestudio.gpp.optimization.prep_garbage.178791685" name="Prepare dead code removal" superClass="com.atollic.truestudio.gpp.optimization.prep_garbage" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option id="com.atollic.truestudio.gpp.optimization.fno_rtti.1743267297" name="Disable RTTI" superClass="com.atollic.truestudio.gpp.optimization.fno_rtti" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option id="com.atollic.truestudio.gpp.optimization.fno_exceptions.857379454" name="Disable exception handling" superClass="com.atollic.truestudio.gpp.optimization.fno_exceptions" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option id="com.atollic.truestudio.exe.debug.toolchain.gpp.optimization.level.1015274674" name="Optimization Level" superClass="com.atollic.truestudio.exe.debug.toolchain.gpp.optimization.level" useByScannerDiscovery="false" value="com.atollic.truestudio.gpp.optimization.level.00" valueType="enumerated"/>
 								<inputType id="com.atollic.truestudio.gpp.input.482460449" superClass="com.atollic.truestudio.gpp.input"/>
 							</tool>
 							<tool id="com.atollic.truestudio.exe.debug.toolchain.ldcc.1463141734" name="C++ Linker" superClass="com.atollic.truestudio.exe.debug.toolchain.ldcc">

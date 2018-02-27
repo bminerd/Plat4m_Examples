@@ -119,11 +119,17 @@ private:
 
     static const ImuLSM6DS3::Config myImuLSM6DS3Config;
 
+    static const AngleRadians myXRotationAngleRadians;
+
+    static const AngleRadians myYRotationAngleRadians;
+
+    static const AngleRadians myZRotationAngleRadians;
+
     //--------------------------------------------------------------------------
     // Private data members
     //--------------------------------------------------------------------------
 
-    AllocationMemoryLite<12288> myAllocationMemory;
+    AllocationMemoryLite<48000> myAllocationMemory;
 
     SystemFreeRtosCortexM mySystem;
 

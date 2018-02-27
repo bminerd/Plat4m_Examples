@@ -43,6 +43,8 @@
 // Include files
 //------------------------------------------------------------------------------
 
+#include <math.h>
+
 #include <ApplicationInsServerApp.h>
 #include <Plat4m_Core/CallbackMethod.h>
 
@@ -114,7 +116,17 @@ const ImuLSM6DS3::Config ApplicationInsServerApp::myImuLSM6DS3Config =
     ImuLSM6DS3::GYRO_HIGH_PASS_FILTER_CUTOFF_FREQUENCY_0_0081_HZ,
     // .readMode
     ImuLSM6DS3::READ_MODE_MAILBOX
+//    ImuLSM6DS3::READ_MODE_BLOCKING
 };
+
+const Plat4m::AngleRadians ApplicationInsServerApp::myXRotationAngleRadians =
+                                                                           M_PI;
+
+const Plat4m::AngleRadians ApplicationInsServerApp::myYRotationAngleRadians =
+                                                                            0.0;
+
+const Plat4m::AngleRadians ApplicationInsServerApp::myZRotationAngleRadians =
+                                                                            0.0;
 
 //------------------------------------------------------------------------------
 // Public constructors
@@ -152,10 +164,12 @@ ApplicationInsServerApp::ApplicationInsServerApp() :
     myInsServer(myComProtocolPlat4m,
                 myBinaryMessageFrameHandler),
     myLedThread(System::createThread(
-                   createCallback(this, &ApplicationInsServerApp::ledThreadCallback),
-                   500)),
+              createCallback(this, &ApplicationInsServerApp::ledThreadCallback),
+              500)),
     myImuThread(System::createThread(
-                 createCallback(this, &ApplicationInsServerApp::imuThreadCallback))),
+             createCallback(this, &ApplicationInsServerApp::imuThreadCallback),
+             0,
+             4096)),
     myImuWaitCondition(System::createWaitCondition(myImuThread)),
     myIsImuAccelDataReady(false),
     myIsImuGyroDataReady(false)
@@ -245,9 +259,28 @@ void ApplicationInsServerApp::initializePeripherals()
 //------------------------------------------------------------------------------
 void ApplicationInsServerApp::initializeSubsystems()
 {
-    myImu.setEnabled(true);
-    myImu.setConfig(myImuConfig);
-    myImu.setLSM6DS3Config(myImuLSM6DS3Config);
+    myImu.setAccelMeasurementReadyCallback(
+          createCallback(this,
+                   &ApplicationInsServerApp::imuAccelMeasurementReadyCallback));
+    myImu.setGyroMeasurementReadyCallback(
+          createCallback(this,
+                    &ApplicationInsServerApp::imuGyroMeasurementReadyCallback));
+
+//    myImu.setEnabled(true);
+//    myImu.setConfig(myImuConfig);
+//    myImu.setLSM6DS3Config(myImuLSM6DS3Config);
+
+    Interrupt::Config interruptConfig;
+//    interruptConfig.priority = 6;
+//    myGyroDataReadyExternalInterrupt.getInterrupt().configure(interruptConfig);
+
+    myIns.setRotationAngles(myXRotationAngleRadians,
+                            myYRotationAngleRadians,
+                            myZRotationAngleRadians);
+
+    myIns.setMeasurementReadyCallback(
+        createCallback(this,
+                       &ApplicationInsServerApp::imuAndInsMeasurementCallback));
 
     myIns.setEnabled(true);
 }
@@ -269,23 +302,16 @@ void ApplicationInsServerApp::initializeSystem()
     myInsServer.setEnabled(true);
     myInsServer.addIns(myIns);
 
-    myIns.setMeasurementReadyCallback(
-        createCallback(this,
-                       &ApplicationInsServerApp::imuAndInsMeasurementCallback));
-
-    myImu.setAccelMeasurementReadyCallback(
-          createCallback(this,
-                   &ApplicationInsServerApp::imuAccelMeasurementReadyCallback));
-    myImu.setGyroMeasurementReadyCallback(
-          createCallback(this,
-                    &ApplicationInsServerApp::imuGyroMeasurementReadyCallback));
-
     InsServer::Config insServerConfig;
     insServerConfig.outputRateDivisionFactor = 1;
     myInsServer.setConfig(insServerConfig);
 
     myImuThread.setPriority(3);
     myImuThread.setEnabled(true);
+
+    myImu.setEnabled(true);
+    myImu.setConfig(myImuConfig);
+    myImu.setLSM6DS3Config(myImuLSM6DS3Config);
 }
 
 //------------------------------------------------------------------------------
@@ -299,6 +325,7 @@ void ApplicationInsServerApp::imuAccelMeasurementReadyCallback()
 {
     myIsImuAccelDataReady = true;
     myImuWaitCondition.notifyFast();
+//    myIns.accelMeasurementReadyCallback();
 }
 
 //------------------------------------------------------------------------------
@@ -306,6 +333,7 @@ void ApplicationInsServerApp::imuGyroMeasurementReadyCallback()
 {
     myIsImuGyroDataReady = true;
     myImuWaitCondition.notifyFast();
+//    myIns.gyroMeasurementReadyCallback();
 }
 
 //------------------------------------------------------------------------------

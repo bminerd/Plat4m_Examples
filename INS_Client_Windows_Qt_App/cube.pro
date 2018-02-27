@@ -5,7 +5,6 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     geometryengine.cpp \
-    main.cpp \
     mainwidget.cpp \
     ../Plat4m_Core/Accel.cpp \
     ../Plat4m_Core/Adc.cpp \
@@ -117,17 +116,13 @@ SOURCES += main.cpp \
     ../Plat4m_Core/SystemWindows/SerialPortWindows.cpp \
     ../Plat4m_Core/SystemWindows/SystemWindows.cpp \
     ../Plat4m_Core/SystemWindows/ThreadWindows.cpp \
-    ../Plat4m_Core/SystemWindows/WaitConditionWindows.cpp
-
-SOURCES += \
-    mainwidget.cpp \
-    geometryengine.cpp
+    ../Plat4m_Core/SystemWindows/WaitConditionWindows.cpp \
+    mainwidgetkalman.cpp \
+    ../Plat4m_Core/InsImu/InsImu.cpp
 
 HEADERS += \
     mainwidget.h \
     geometryengine.h \
-    geometryengine.h \
-    mainwidget.h \
     ../Plat4m_Core/Accel.h \
     ../Plat4m_Core/Adc.h \
     ../Plat4m_Core/AllocationMemory.h \
@@ -283,14 +278,20 @@ HEADERS += \
     ../Plat4m_Core/SystemWindows/SerialPortWindows.h \
     ../Plat4m_Core/SystemWindows/SystemWindows.h \
     ../Plat4m_Core/SystemWindows/ThreadWindows.h \
-    ../Plat4m_Core/SystemWindows/WaitConditionWindows.h
+    ../Plat4m_Core/SystemWindows/WaitConditionWindows.h \
+    mainwidgetkalman.h \
+    ../Plat4m_Core/InsImu/InsImu.h
+
+INCLUDEPATH += \
+    ../ \
+    ../Eigen/
 
 RESOURCES += \
     shaders.qrc \
     textures.qrc
 
-# install
-target.path = $$[QT_INSTALL_EXAMPLES]/opengl/cube
-INSTALLS += target
+DEFINES += \
 
-DISTFILES +=
+# install
+#target.path = ./
+#INSTALLS += target
