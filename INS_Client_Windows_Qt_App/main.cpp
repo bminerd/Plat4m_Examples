@@ -82,7 +82,7 @@ static SystemWindows systemWindows;
 
 static ProcessorWindows processorWindows;
 
-static SerialPortWindows serialPort("COM3");
+static SerialPortWindows serialPort("COM4");
 
 static const SerialPort::Config serialPortConfig =
 {
@@ -128,9 +128,14 @@ int main(int argc, char *argv[])
 #ifndef QT_NO_OPENGL
     widget = new MainWidget(insClient);
     widget->show();
+    widget->resize(800, 600);
+    widget->move(200, 200);
 
     widgetKalman = new MainWidgetKalman(imuClient);
     widgetKalman->show();
+    widgetKalman->resize(800, 600);
+    widgetKalman->move(1000, 200);
+
 #else
     QLabel note("OpenGL Support required");
     note.show();
@@ -146,6 +151,7 @@ int main(int argc, char *argv[])
     serialPort.setConfig(serialPortConfig);
 
     insClient.setEnabled(true);
+    imuClient.setEnabled(true);
 
     comLink.setEnabled(true);
 

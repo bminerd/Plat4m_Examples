@@ -65,7 +65,7 @@ MainWidget::MainWidget(Plat4m::InsClient& insClient, QWidget *parent) :
     angularSpeed(0)
 {
     insClient.setMeasurementReadyCallback(
-                createCallback(this, &MainWidget::insMeasurementReadyCallback));
+        Plat4m::createCallback(this, &MainWidget::insMeasurementReadyCallback));
 }
 
 MainWidget::~MainWidget()
@@ -83,8 +83,9 @@ void MainWidget::insMeasurementReadyCallback()
     Plat4m::Ins::Measurement insMeasurement;
     myInsClient.getMeasurement(insMeasurement);
 
-    float pitch = insMeasurement.rotationYAngleDegrees;
-    float yaw   = insMeasurement.rotationZAngleDegrees;
+    float pitch = -insMeasurement.rotationYAngleDegrees;
+//    float yaw   = insMeasurement.rotationZAngleDegrees;
+    float yaw   = 180.0;
     float roll  = insMeasurement.rotationXAngleDegrees;
 
     // Update rotation

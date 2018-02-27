@@ -59,7 +59,7 @@
 #include <Plat4m_Core/CallbackMethod.h>
 
 MainWidgetKalman::MainWidgetKalman(Plat4m::ImuClient& imuClient,
-                                               QWidget *parent) :
+                                   QWidget *parent) :
     QOpenGLWidget(parent),
     myImuClient(imuClient),
     myIns(myImuClient),
@@ -68,8 +68,25 @@ MainWidgetKalman::MainWidgetKalman(Plat4m::ImuClient& imuClient,
     texture(0),
     angularSpeed(0)
 {
+    myImuClient.setMeasurementReadyCallback(
+        Plat4m::createCallback(this,
+                               &MainWidgetKalman::imuMeasurementReadyCallback));
+
     myIns.setMeasurementReadyCallback(
-          createCallback(this, &MainWidgetKalman::insMeasurementReadyCallback));
+        Plat4m::createCallback(this,
+                               &MainWidgetKalman::insMeasurementReadyCallback));
+
+    const Plat4m::AngleRadians xRotationAngleRadians = M_PI;
+
+    const Plat4m::AngleRadians yRotationAngleRadians = 0.0;
+
+    const Plat4m::AngleRadians zRotationAngleRadians = 0.0;
+
+    myIns.setRotationAngles(xRotationAngleRadians,
+                            yRotationAngleRadians,
+                            zRotationAngleRadians);
+
+    myIns.setEnabled(true);
 }
 
 MainWidgetKalman::~MainWidgetKalman()
@@ -84,14 +101,34 @@ MainWidgetKalman::~MainWidgetKalman()
 
 void MainWidgetKalman::imuMeasurementReadyCallback()
 {
+    Plat4m::Imu::AccelMeasurement imuAccelMeasurement;
+    myImuClient.getAccelMeasurement(imuAccelMeasurement);
+
+    Plat4m::Imu::GyroMeasurement imuGyroMeasurement;
+    myImuClient.getGyroMeasurement(imuGyroMeasurement);
+
     switch (mySensors)
     {
         case SENSORS_ACCEL:
         {
+            imuGyroMeasurement.xAngularVelocityDps = 0.0;
+            imuGyroMeasurement.yAngularVelocityDps = 0.0;
+            imuGyroMeasurement.zAngularVelocityDps = 0.0;
+
+            myIns.setImuGyroMeasurement(imuGyroMeasurement);
+            myIns.setImuAccelMeasurement(imuAccelMeasurement);
+
             break;
         }
         case SENSORS_GYRO:
         {
+            imuAccelMeasurement.xAccelerationG = 0.0;
+            imuAccelMeasurement.yAccelerationG = 0.0;
+            imuAccelMeasurement.zAccelerationG = 1.0;
+
+            myIns.setImuGyroMeasurement(imuGyroMeasurement);
+            myIns.setImuAccelMeasurement(imuAccelMeasurement);
+
             break;
         }
         case SENSORS_IMU: // Fall through
@@ -101,18 +138,17 @@ void MainWidgetKalman::imuMeasurementReadyCallback()
             myIns.accelMeasurementReadyCallback();
         }
     }
-
-    // Update rotation
-    rotation = QQuaternion::fromEulerAngles(pitch, yaw, roll);
-
-    // Request an update
-    update();
 }
 
-void MainWidgetKalman::imuMeasurementReadyCallback()
+void MainWidgetKalman::insMeasurementReadyCallback()
 {
-    myIns.accelMeasurementReadyCallback();
-    myIns.gyroMeasurementReadyCallback();
+    Plat4m::Ins::Measurement insMeasurement;
+    myIns.getMeasurement(insMeasurement);
+
+    float pitch = -insMeasurement.rotationYAngleDegrees;
+//    float yaw   = insMeasurement.rotationZAngleDegrees;
+    float yaw   = 180.0;
+    float roll  = insMeasurement.rotationXAngleDegrees;
 
     // Update rotation
     rotation = QQuaternion::fromEulerAngles(pitch, yaw, roll);
