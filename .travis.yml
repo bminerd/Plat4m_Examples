@@ -1,0 +1,4 @@
+language: cpp
+before_install:
+install:
+script: ./build.sh

@@ -39,13 +39,13 @@
 /// @brief Main source file for Blinky_SystemLite_STM32F30x_App.
 ///
 
-#include <Plat4m.h>
-#include <AllocationMemoryLite.h>
-#include <SystemLiteCortexM.h>
-#include <ProcessorSTM32F30x.h>
-#include <GpioPortSTM32F30x.h>
-#include <GpioPinSTM32F30x.h>
-#include <CallbackFunction.h>
+#include <Plat4m_Core/Plat4m.h>
+#include <Plat4m_Core/AllocationMemoryLite/AllocationMemoryLite.h>
+#include <Plat4m_Core/SystemLite/SystemLiteCortexM/SystemLiteCortexM.h>
+#include <Plat4m_Core/STM32F30x/ProcessorSTM32F30x.h>
+#include <Plat4m_Core/STM32F30x/GpioPortSTM32F30x.h>
+#include <Plat4m_Core/STM32F30x/GpioPinSTM32F30x.h>
+#include <Plat4m_Core/CallbackFunction.h>
 
 using namespace Plat4m;
 

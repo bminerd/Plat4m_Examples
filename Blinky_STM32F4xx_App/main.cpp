@@ -39,10 +39,10 @@
 /// @brief Main source file for Blinky_STM32F4xx_App.
 ///
 
-#include <Plat4m.h>
-#include <ProcessorSTM32F4xx.h>
-#include <GpioPortSTM32F4xx.h>
-#include <GpioPinSTM32F4xx.h>
+#include <Plat4m_Core/Plat4m.h>
+#include <Plat4m_Core/STM32F4xx/ProcessorSTM32F4xx.h>
+#include <Plat4m_Core/STM32F4xx/GpioPortSTM32F4xx.h>
+#include <Plat4m_Core/STM32F4xx/GpioPinSTM32F4xx.h>
 
 using namespace Plat4m;
 
