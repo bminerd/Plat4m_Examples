@@ -1,5 +1,7 @@
 #! /bin/bash
 
+set -e
+
 cd Blinky_STM32F30x_App
 ./build.sh
 cd ..
