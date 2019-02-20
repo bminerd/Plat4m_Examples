@@ -49,7 +49,7 @@
 
 using namespace Plat4m;
 
-static SystemLiteCortexM system;
+static SystemLiteCortexM systemLite;
 
 static AllocationMemoryLite<256> allocationMemory;
 
@@ -100,8 +100,8 @@ int main()
 										  500);
 	thread.setEnabled(true);
 
-	system.enableSystemClock(72000000);
-	system.run();
+	systemLite.enableSystemClock(72000000);
+	systemLite.run();
 
     return 0;
 }
