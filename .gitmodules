@@ -1,15 +1,20 @@
 [submodule "Plat4m_Core"]
 	path = Plat4m_Core
 	url = https://github.com/bminerd/Plat4m_Core.git
+	branch = master
 [submodule "Plat4m_Math"]
 	path = Plat4m_Math
 	url = https://github.com/bminerd/Plat4m_Math.git
+	branch = master
 [submodule "Plat4m_Controls"]
 	path = Plat4m_Controls
 	url = https://github.com/bminerd/Plat4m_Controls.git
+	branch = master
 [submodule "Eigen"]
 	path = Eigen
 	url = https://github.com/eigenteam/eigen-git-mirror.git
+	branch = master
 [submodule "Plat4m_CMake"]
 	path = Plat4m_CMake
 	url = https://github.com/bminerd/Plat4m_CMake.git
+	branch = master
